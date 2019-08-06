@@ -30,4 +30,17 @@ public class EmployeeController {
         return employee;//返回格式：json
 
     }
+
+    @GetMapping("/emp")
+    public Employee update(Employee employee){
+        Employee employee1=employeeService.updateEmp(employee);
+        return employee1;
+    }
+
+
+    @GetMapping("/delemp")
+    public String deleteEmp(Integer id){
+        employeeService.deleteEmp(id);
+        return "success";
+    }
 }
