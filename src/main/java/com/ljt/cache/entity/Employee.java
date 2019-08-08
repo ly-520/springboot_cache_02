@@ -8,13 +8,15 @@ package com.ljt.cache.entity;/**
 
 import lombok.Data;
 
+import java.io.Serializable;
+
 /**
  * @author
  * @description
  * @date 2019/8/5
  */
 @Data
-public class Employee {
+public class Employee implements Serializable {
     private int id;
     private String lastName;
     private String email;

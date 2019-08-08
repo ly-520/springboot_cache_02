@@ -45,8 +45,6 @@ public class EmployeeService {
      *            org.springframework.boot.autoconfigure.cache.SimpleCacheConfiguration【默认】
      *            org.springframework.boot.autoconfigure.cache.NoOpCacheConfiguration
      *
-     *
-     *
      *            默认生效的是SimpleCacheConfiguration
      *
      *
@@ -64,7 +62,6 @@ public class EmployeeService {
      *
      * @Cacheable标注的方法执行之前先来检查缓存中有没有这个数据，默认按照参数胡值作为key
      * 去查询缓存， 如果没有就运行方法并将结果放入缓存；
-     *
      *
      * 几个属性：
      *      *      cacheNames/value:指定缓存组件的名字   ：将方法的返回结果放在哪个缓存中，以数组的方式，可以指定多个缓存；
