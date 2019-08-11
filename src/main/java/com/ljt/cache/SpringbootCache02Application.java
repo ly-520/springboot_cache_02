@@ -31,6 +31,15 @@ import org.springframework.scheduling.annotation.EnableScheduling;
  *    3、配置redis
  *    4、测试缓存
  *          原理：Cachemanager===Cache缓存组件来实际给缓存中存取数据
+ *    四、整个消息中间件RabbitMQ
+ *      自动配置：
+ *      1、RabbitAutoConfiguration
+ *      2、有自动配置的连接工厂ConnectionFactory
+ *      3、RabbitProperties 封装了rabbitmq 的配置
+ *      4、RabbitMQTemplate:给RabbitMQ发送消息和接收消息
+ *      5、AmqpAdmin :RabbitMQ系统管理功能组件（不用与发接收消息，而是用于创建队列和交换器等）
+ *      6、
+ *
  */
 @MapperScan("com.ljt.cache.mapper")
 @SpringBootApplication

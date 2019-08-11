@@ -1,15 +1,22 @@
 package com.ljt.cache;
 
+import com.ljt.cache.entity.Book;
 import com.ljt.cache.entity.Employee;
 import com.ljt.cache.mapper.EmployeeMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.test.context.junit4.SpringRunner;
+
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+
 @Slf4j
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -26,6 +33,9 @@ public class SpringbootCache02ApplicationTests {
 
     @Autowired
     RedisTemplate<Object,Employee> employeeRedisTemplate;
+
+    @Autowired
+    RabbitTemplate rabbitTemplate;
 
     /**
      * String （字符串）、List(列表)、Set(集合)、Hash(散列)、ZSet(有序集合)
@@ -70,4 +80,37 @@ public class SpringbootCache02ApplicationTests {
         System.out.println(employee.toString());
     }
 
+
+    //单播模式（点对点）：将一个消息发布到队列里面
+    @Test
+    public void testRabbitMQ(){
+        //Message需要自己构造一个；定制消息体内容和消息头
+        //rabbitTemplate.send(exchange,routKey,message);
+
+        //Object默认当成消息体，只需要传入要发送的对象，自动序列化发送给rabbitmq
+        //rabbitTemplate.convertAndSend(exchange,routKey,Object);
+        Map<String,Object> map=new HashMap<>();
+        map.put("msg","这是第一个消息");
+        map.put("data", Arrays.asList("helloworld",1234,true));
+        //对象被序列化以后发送出去
+        rabbitTemplate.convertAndSend("exchange.direct","atguigu.news", new Book("西游记","吴承恩"));
+    }
+
+
+    //接收消息,如何将数据转为json
+    @Test
+    public void reviceMessage(){
+
+        //receice 可以接受消息，receiveAndConvert接收并转化
+        Object o=rabbitTemplate.receiveAndConvert("atguigu.news");
+        System.out.println(o.getClass());
+        System.out.println(o);
+    }
+
+    //广播
+    @Test
+    public void sendMsg(){
+        rabbitTemplate.convertAndSend("exchange.fanout","",new Book("三国演义","罗贯中"));
+
+    }
 }
