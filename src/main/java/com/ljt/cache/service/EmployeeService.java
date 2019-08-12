@@ -9,6 +9,7 @@ package com.ljt.cache.service;/**
 import com.ljt.cache.entity.Employee;
 import com.ljt.cache.mapper.EmployeeMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
@@ -19,7 +20,7 @@ import org.springframework.stereotype.Service;
  * @description
  * @date 2019/8/5
  */
-//@CacheConfig(cacheNames = "emp")   //抽取缓存的公共配置类中的缓存名：如下列的方法注解中共有的value值
+@CacheConfig(cacheNames = "emp")   //抽取缓存的公共配置类中的缓存名：如下列的方法注解中共有的value值
 @Service
 public class EmployeeService {
 
