@@ -11,8 +11,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import javax.mail.internet.MimeMessage;
+import java.io.File;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -110,7 +115,43 @@ public class SpringbootCache02ApplicationTests {
     //广播
     @Test
     public void sendMsg(){
-        rabbitTemplate.convertAndSend("exchange.fanout","",new Book("三国演义","罗贯中"));
+        rabbitTemplate.convertAndSend("exchange.fanout","",new Book("测试","liu罗贯中"));
 
+    }
+
+
+    @Autowired
+    JavaMailSenderImpl javaMailSender;
+
+    @Test
+    public void sendQQEmailMsg(){
+        SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
+        //邮件设置
+        simpleMailMessage.setSubject("通知-今晚开会");
+        simpleMailMessage.setText("刘先生进行月总结讲话");
+       // simpleMailMessage.setTo("2428778405@qq.com");
+        simpleMailMessage.setTo("15036890387@163.com");
+        simpleMailMessage.setFrom("2022290377@qq.com");
+        javaMailSender.send(simpleMailMessage);
+    }
+
+    @Test
+    public void sendHightQQEmailMsg()throws Exception{
+        //1、创建一个复杂的消息邮件
+        MimeMessage mimeMessage= javaMailSender.createMimeMessage();
+        MimeMessageHelper helper=new MimeMessageHelper(mimeMessage,true);
+
+        //邮件设置
+        helper.setSubject("高级邮件：今晚谈理想");
+        helper.setText("<b>测试测试测试测试测试测试测试测试</b>",true);
+
+        helper.setTo("15036890387@163.com");
+        helper.setTo("2428778405@qq.com");
+        helper.setFrom("2022290377@qq.com");
+
+        //上传文件
+        helper.addAttachment("1.png",new File("E:\\img\\1.png"));
+        helper.addAttachment("2.png",new File("E:\\img\\2.png"));
+        javaMailSender.send(mimeMessage);
     }
 }

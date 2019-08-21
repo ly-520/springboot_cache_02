@@ -3,6 +3,7 @@ package com.ljt.cache;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
 
@@ -38,13 +39,26 @@ import org.springframework.scheduling.annotation.EnableScheduling;
  *      3、RabbitProperties 封装了rabbitmq 的配置
  *      4、RabbitMQTemplate:给RabbitMQ发送消息和接收消息
  *      5、AmqpAdmin :RabbitMQ系统管理功能组件（不用与发接收消息，而是用于创建队列和交换器等）
- *      6、
+ *     五、整合es
+ *        springBoot默认支持两种技术来和ES交互；
+ *        1、Jest（默认不生效，缺少一个jest的工具包io.searchbox.client.JestClient）
+ *        2、SpringBoot ElasticSearch（内部自动帮我们配置了）
+ *              1）、Client 节点信息 clusterNodes；clusterName
+ *              2)、通过ElasticTemplate 操作es
+ *              3）、编写一个ElasticSearchRepository的子接口来操作es
+ *
+ *      六、异步处理，
+ *         1）在需要异步处理的方法上添加@Async
+ *         2）在启动类上添加@EnableAsync
+ *      七、定时处理
+ *
  *
  */
 @MapperScan("com.ljt.cache.mapper")
 @SpringBootApplication
 //@EnableCaching
 @EnableScheduling
+@EnableAsync
 public class SpringbootCache02Application {
 
     public static void main(String[] args) {
